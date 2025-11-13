@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integration Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard API Integration Test</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dashboard Statistics Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Dashboard Statistics</h2>
+                <button onclick="testDashboardStats()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Test Dashboard API
+                </button>
+                <pre id="dashboard-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+
+            <!-- Karyawan Data Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Karyawan Data</h2>
+                <button onclick="testKaryawanData()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Test Karyawan API
+                </button>
+                <pre id="karyawan-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+
+            <!-- Karyawan Statistics Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Karyawan Statistics</h2>
+                <button onclick="testKaryawanStats()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                    Test Karyawan Stats
+                </button>
+                <pre id="karyawan-stats-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+
+            <!-- Recent Activities Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Recent Activities</h2>
+                <button onclick="testRecentActivities()" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                    Test Activities API
+                </button>
+                <pre id="activities-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+
+            <!-- Attendance Chart Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Attendance Chart</h2>
+                <button onclick="testAttendanceChart()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Test Chart API
+                </button>
+                <pre id="chart-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+
+            <!-- Direct API Test -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Direct API Test</h2>
+                <button onclick="testDirectAPI()" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
+                    Test Direct API
+                </button>
+                <pre id="direct-result" class="mt-4 text-sm bg-gray-100 p-2 rounded overflow-auto max-h-32"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dashboard Statistics Test
+        async function testDashboardStats() {
+            const resultEl = document.getElementById('dashboard-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/dashboard/statistics');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Karyawan Data Test
+        async function testKaryawanData() {
+            const resultEl = document.getElementById('karyawan-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/karyawan/api/data?per_page=5');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Karyawan Statistics Test
+        async function testKaryawanStats() {
+            const resultEl = document.getElementById('karyawan-stats-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/karyawan/api/statistics');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Recent Activities Test
+        async function testRecentActivities() {
+            const resultEl = document.getElementById('activities-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/dashboard/activities');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Attendance Chart Test
+        async function testAttendanceChart() {
+            const resultEl = document.getElementById('chart-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/dashboard/attendance-chart');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Direct API Test
+        async function testDirectAPI() {
+            const resultEl = document.getElementById('direct-result');
+            resultEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('/api/karyawan?per_page=3');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
