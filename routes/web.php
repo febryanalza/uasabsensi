@@ -1,16 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\KaryawanController;
 use App\Http\Controllers\Web\AbsensiController;
 use App\Http\Controllers\Web\GajiController;
 
-// Homepage - Company Profile
+// Homepage - Company Profile (Main)
 Route::get('/', function () {
-    return view('home');
+    try {
+        return view('home'); // Main company homepage
+    } catch (\Exception $e) {
+        Log::error('Homepage error: ' . $e->getMessage());
+        return response('Server temporarily unavailable', 503);
+    }
 })->name('home');
+
+// Welcome/Alternative Route
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
 // Authentication routes
 Route::group(['middleware' => 'guest'], function () {
@@ -28,45 +39,45 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Dashboard AJAX endpoints
+    // Dashboard AJAX endpoints (optimized)
     Route::get('/dashboard/statistics', [DashboardController::class, 'getStatistics'])->name('dashboard.statistics');
     Route::get('/dashboard/activities', [DashboardController::class, 'getRecentActivities'])->name('dashboard.activities');
     Route::get('/dashboard/attendance-chart', [DashboardController::class, 'getAttendanceChart'])->name('dashboard.attendance-chart');
     
-// Karyawan Management Routes
-Route::resource('karyawan', KaryawanController::class);
+    // Karyawan Management Routes
+    Route::resource('karyawan', KaryawanController::class);
 
-// Karyawan API Proxy Routes
-Route::prefix('karyawan/api')->group(function () {
-    Route::get('/data', [KaryawanController::class, 'getData']);
-    Route::get('/statistics', [KaryawanController::class, 'getStatistics']);
-    Route::post('/store', [KaryawanController::class, 'store']);
-    Route::get('/{id}', [KaryawanController::class, 'getKaryawan']);
-    Route::put('/{id}', [KaryawanController::class, 'update']);
-    Route::delete('/{id}/delete', [KaryawanController::class, 'destroy']);
-    Route::post('/bulk-operation', [KaryawanController::class, 'bulkOperation']);
-});
+    // Karyawan AJAX API Routes (consolidated)
+    Route::prefix('karyawan/api')->name('karyawan.api.')->group(function () {
+        Route::get('/data', [KaryawanController::class, 'getData'])->name('data');
+        Route::get('/statistics', [KaryawanController::class, 'getStatistics'])->name('statistics');
+        Route::post('/store', [KaryawanController::class, 'store'])->name('store');
+        Route::get('/{id}', [KaryawanController::class, 'getKaryawan'])->name('get');
+        Route::put('/{id}', [KaryawanController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [KaryawanController::class, 'destroy'])->name('delete');
+        Route::post('/bulk-operation', [KaryawanController::class, 'bulkOperation'])->name('bulk');
+    });
 
-// Absensi Management Routes
-Route::resource('absensi', AbsensiController::class);
+    // Absensi Management Routes
+    Route::resource('absensi', AbsensiController::class);
 
-// Absensi API Proxy Routes
-Route::prefix('absensi/api')->group(function () {
-    Route::get('/data', [AbsensiController::class, 'getData']);
-    Route::get('/statistics', [AbsensiController::class, 'getStatistics']);
-    Route::post('/store', [AbsensiController::class, 'store']);
-    Route::get('/karyawan-list', [AbsensiController::class, 'getKaryawanList']);
-    Route::get('/{id}', [AbsensiController::class, 'getAbsensi']);
-    Route::put('/{id}', [AbsensiController::class, 'update']);
-    Route::delete('/{id}/delete', [AbsensiController::class, 'destroy']);
-    Route::post('/bulk-operation', [AbsensiController::class, 'bulkOperation']);
-    Route::post('/{id}/cancel', [AbsensiController::class, 'cancel']);
-    Route::get('/rekap/{karyawan_id}', [AbsensiController::class, 'getRekapKaryawan']);
-    Route::get('/attendance-stats/{karyawan_id}', [AbsensiController::class, 'getAttendanceStats']);
-    Route::get('/bonus-eligibility', [AbsensiController::class, 'getBonusEligibility']);
-    Route::get('/year-end-bonus', [AbsensiController::class, 'getYearEndBonus']);
-    Route::get('/company-rules', [AbsensiController::class, 'getCompanyRules']);
-});
+    // Absensi AJAX API Routes (consolidated)
+    Route::prefix('absensi/api')->name('absensi.api.')->group(function () {
+        Route::get('/data', [AbsensiController::class, 'getData'])->name('data');
+        Route::get('/statistics', [AbsensiController::class, 'getStatistics'])->name('statistics');
+        Route::post('/store', [AbsensiController::class, 'store'])->name('store');
+        Route::get('/karyawan-list', [AbsensiController::class, 'getKaryawanList'])->name('karyawan-list');
+        Route::get('/{id}', [AbsensiController::class, 'getAbsensi'])->name('get');
+        Route::put('/{id}', [AbsensiController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [AbsensiController::class, 'destroy'])->name('delete');
+        Route::post('/bulk-operation', [AbsensiController::class, 'bulkOperation'])->name('bulk');
+        Route::post('/{id}/cancel', [AbsensiController::class, 'cancel'])->name('cancel');
+        Route::get('/rekap/{karyawan_id}', [AbsensiController::class, 'getRekapKaryawan'])->name('rekap');
+        Route::get('/attendance-stats/{karyawan_id}', [AbsensiController::class, 'getAttendanceStats'])->name('stats');
+        Route::get('/bonus-eligibility', [AbsensiController::class, 'getBonusEligibility'])->name('bonus-eligibility');
+        Route::get('/year-end-bonus', [AbsensiController::class, 'getYearEndBonus'])->name('year-end-bonus');
+        Route::get('/company-rules', [AbsensiController::class, 'getCompanyRules'])->name('company-rules');
+    });
 
     // Gaji management routes
     Route::prefix('gaji')->name('gaji.')->group(function () {

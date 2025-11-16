@@ -15,15 +15,15 @@
                     <span></span>
                 </button>
 
-                <!-- Navigation Menu -->
+                <!-- Navigation Menu (Simplified) -->
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a></li>
-                    <li><a href="{{ url('/#about') }}" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="{{ url('/#services') }}" class="nav-link">Layanan</a></li>
-                    <li><a href="{{ url('/#portfolio') }}" class="nav-link">Portfolio</a></li>
-                    <li><a href="{{ url('/#team') }}" class="nav-link">Tim</a></li>
-                    <li><a href="{{ url('/#contact') }}" class="nav-link">Kontak</a></li>
-                    <li><a href="{{ url('/login') }}" class="btn-login">Login</a></li>
+                    <li><a href="{{ url('/') }}" class="nav-link">Home</a></li>
+                    <li><a href="{{ url('/company#about') }}" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="{{ url('/company#services') }}" class="nav-link">Layanan</a></li>
+                    <li><a href="{{ url('/company#portfolio') }}" class="nav-link">Portfolio</a></li>
+                    <li><a href="{{ url('/company#team') }}" class="nav-link">Tim</a></li>
+                    <li><a href="{{ url('/company#contact') }}" class="nav-link">Kontak</a></li>
+                    <li><a href="{{ route('login') }}" class="btn-login">Login</a></li>
                 </ul>
             </div>
         </div>
