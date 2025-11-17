@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PT Pencari Error Sejati - Konsultan IT & Jasa IT Profesional')
+@section('title', 'Sistem Informasi Absensi Perusahaan - Kelola Absensi Karyawan')
 
 @section('content')
 <!-- Hero Section -->
@@ -9,36 +9,36 @@
     <div class="container">
         <div class="hero-content">
             <h1 class="hero-title animate-fade-in">
-                Solusi IT Terpercaya untuk <span class="gradient-text">Bisnis Anda</span>
+                Sistem Absensi Modern untuk <span class="gradient-text">Perusahaan Anda</span>
             </h1>
             <p class="hero-subtitle animate-fade-in-delay-1">
-                PT Pencari Error Sejati adalah mitra terpercaya dalam transformasi digital bisnis Anda. 
-                Kami menyediakan konsultan IT profesional dan layanan teknologi informasi yang komprehensif.
+                Sistem Informasi Absensi Perusahaan adalah solusi terpercaya untuk mengelola kehadiran karyawan. 
+                Kami menyediakan sistem absensi digital modern dengan teknologi RFID dan monitoring real-time.
             </p>
             <div class="hero-buttons animate-fade-in-delay-2">
-                <a href="#contact" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i> Mulai Konsultasi
+                <a href="{{ route('login') }}" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login Sistem
                 </a>
-                <a href="#services" class="btn btn-outline">
-                    <i class="fas fa-play-circle"></i> Lihat Layanan
+                <a href="#about" class="btn btn-outline">
+                    <i class="fas fa-info-circle"></i> Tentang Sistem
                 </a>
             </div>
             <div class="hero-stats animate-fade-in-delay-3">
                 <div class="stat-item">
-                    <h3>500+</h3>
-                    <p>Proyek Selesai</p>
-                </div>
-                <div class="stat-item">
-                    <h3>300+</h3>
-                    <p>Klien Puas</p>
-                </div>
-                <div class="stat-item">
-                    <h3>10+</h3>
-                    <p>Tahun Pengalaman</p>
+                    <h3>1000+</h3>
+                    <p>Karyawan Terdaftar</p>
                 </div>
                 <div class="stat-item">
                     <h3>50+</h3>
-                    <p>Expert Team</p>
+                    <p>Perusahaan</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Monitoring</p>
+                </div>
+                <div class="stat-item">
+                    <h3>RFID</h3>
+                    <p>Technology</p>
                 </div>
             </div>
         </div>
@@ -55,43 +55,43 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Tentang Kami</h2>
-            <p class="section-subtitle">Mengenal PT Pencari Error Sejati Lebih Dekat</p>
+            <p class="section-subtitle">Mengenal Sistem Informasi Absensi Perusahaan Lebih Dekat</p>
         </div>
         <div class="about-content">
             <div class="about-text">
-                <h3>Mitra Digital Transformation Anda</h3>
+                <h3>Solusi Absensi Digital Terpercaya</h3>
                 <p>
-                    PT Pencari Error Sejati didirikan dengan visi untuk menjadi perusahaan konsultan IT terdepan di Indonesia. 
-                    Dengan tim profesional yang berpengalaman lebih dari 10 tahun, kami berkomitmen memberikan solusi teknologi 
-                    terbaik yang disesuaikan dengan kebutuhan bisnis Anda.
+                    Sistem Informasi Absensi Perusahaan dikembangkan dengan visi untuk menjadi platform absensi digital terdepan. 
+                    Dengan teknologi RFID dan monitoring real-time, kami berkomitmen memberikan solusi pengelolaan kehadiran 
+                    karyawan yang akurat dan efisien sesuai kebutuhan perusahaan modern.
                 </p>
                 <p>
-                    Kami memahami bahwa setiap bisnis memiliki tantangan unik. Oleh karena itu, kami tidak hanya menyediakan 
-                    layanan IT standar, tetapi juga menganalisis, merancang, dan mengimplementasikan solusi khusus yang 
-                    mendorong pertumbuhan bisnis Anda.
+                    Kami memahami bahwa setiap perusahaan memiliki kebijakan absensi yang berbeda. Oleh karena itu, sistem 
+                    kami dirancang fleksibel dengan fitur kustomisasi aturan absensi, laporan komprehensif, dan integrasi 
+                    dengan sistem payroll untuk mendukung operasional HR yang optimal.
                 </p>
                 <div class="about-features">
                     <div class="feature-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Tim Profesional Bersertifikat</span>
+                        <span>Teknologi RFID Modern</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Metodologi Agile & Scrum</span>
+                        <span>Real-time Monitoring</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Support 24/7</span>
+                        <span>Laporan Otomatis</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Garansi Kepuasan Klien</span>
+                        <span>Integrasi Payroll</span>
                     </div>
                 </div>
             </div>
             <div class="about-image">
                 <div class="about-img-wrapper">
-                    <i class="fas fa-laptop-code"></i>
+                    <i class="fas fa-user-clock"></i>
                 </div>
             </div>
         </div>
@@ -102,62 +102,62 @@
 <section class="services" id="services">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Layanan Kami</h2>
-            <p class="section-subtitle">Solusi IT Komprehensif untuk Semua Kebutuhan Bisnis</p>
+            <h2 class="section-title">Fitur Sistem</h2>
+            <p class="section-subtitle">Solusi Absensi Digital Komprehensif untuk Perusahaan Modern</p>
         </div>
         <div class="services-grid">
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-users-cog"></i>
+                    <i class="fas fa-id-card"></i>
                 </div>
-                <h3>Konsultan IT</h3>
-                <p>Konsultasi strategis IT untuk mengoptimalkan infrastruktur teknologi bisnis Anda dan mencapai efisiensi maksimal.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Absensi RFID</h3>
+                <p>Sistem absensi menggunakan teknologi RFID yang akurat dan cepat untuk pencatatan kehadiran karyawan real-time.</p>
+                <a href="{{ route('login') }}" class="service-link">Akses Sistem <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-code"></i>
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <h3>Pengembangan Software</h3>
-                <p>Pembuatan aplikasi web, mobile, dan desktop custom sesuai kebutuhan bisnis dengan teknologi terkini.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Laporan Real-time</h3>
+                <p>Dashboard monitoring dan laporan kehadiran karyawan secara real-time dengan analisis statistik lengkap.</p>
+                <a href="#" class="service-link">Lihat Demo <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-cloud"></i>
+                    <i class="fas fa-users"></i>
                 </div>
-                <h3>Cloud Solutions</h3>
-                <p>Migrasi dan pengelolaan infrastruktur cloud untuk skalabilitas dan efisiensi biaya yang lebih baik.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Manajemen Karyawan</h3>
+                <p>Pengelolaan data karyawan terintegrasi dengan sistem absensi untuk kemudahan administrasi HR.</p>
+                <a href="#" class="service-link">Kelola Data <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-headset"></i>
+                    <i class="fas fa-cogs"></i>
                 </div>
-                <h3>IT Support & Maintenance</h3>
-                <p>Dukungan teknis 24/7 dan pemeliharaan sistem untuk memastikan operasional bisnis berjalan lancar.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Aturan Fleksibel</h3>
+                <p>Konfigurasi aturan absensi yang fleksibel sesuai kebijakan perusahaan dengan sistem toleransi otomatis.</p>
+                <a href="#" class="service-link">Atur Kebijakan <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-money-check-alt"></i>
                 </div>
-                <h3>Cyber Security</h3>
-                <p>Perlindungan sistem dan data bisnis dari ancaman cyber dengan solusi keamanan tingkat enterprise.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Integrasi Payroll</h3>
+                <p>Integrasi seamless dengan sistem penggajian untuk perhitungan otomatis berdasarkan data kehadiran.</p>
+                <a href="#" class="service-link">Lihat Fitur <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="service-card">
                 <div class="service-icon">
-                    <i class="fas fa-database"></i>
+                    <i class="fas fa-mobile-alt"></i>
                 </div>
-                <h3>Database Management</h3>
-                <p>Desain, implementasi, dan optimasi database untuk performa dan keamanan data yang optimal.</p>
-                <a href="#" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                <h3>Mobile Access</h3>
+                <p>Akses sistem absensi melalui perangkat mobile untuk monitoring dan pengelolaan dari mana saja.</p>
+                <a href="#" class="service-link">Download App <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </div>
@@ -167,51 +167,51 @@
 <section class="portfolio" id="portfolio">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Portfolio</h2>
-            <p class="section-subtitle">Proyek-Proyek yang Telah Kami Selesaikan</p>
+            <h2 class="section-title">Dashboard</h2>
+            <p class="section-subtitle">Antarmuka Sistem yang User-Friendly dan Informatif</p>
         </div>
         <div class="portfolio-grid">
             <div class="portfolio-item">
                 <div class="portfolio-image">
-                    <i class="fas fa-building"></i>
+                    <i class="fas fa-tachometer-alt"></i>
                 </div>
                 <div class="portfolio-content">
-                    <h3>Sistem ERP Manufaktur</h3>
-                    <p>PT. Industri Maju Bersama</p>
-                    <span class="portfolio-tag">Enterprise Software</span>
+                    <h3>Dashboard Admin</h3>
+                    <p>Monitoring Keseluruhan Sistem</p>
+                    <span class="portfolio-tag">Admin Panel</span>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <div class="portfolio-image">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-clock"></i>
                 </div>
                 <div class="portfolio-content">
-                    <h3>E-Commerce Platform</h3>
-                    <p>Toko Online Nusantara</p>
-                    <span class="portfolio-tag">Web Development</span>
+                    <h3>Absensi Karyawan</h3>
+                    <p>Interface Scan RFID</p>
+                    <span class="portfolio-tag">RFID System</span>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <div class="portfolio-image">
-                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas fa-chart-bar"></i>
                 </div>
                 <div class="portfolio-content">
-                    <h3>Mobile Banking App</h3>
-                    <p>Bank Digital Indonesia</p>
-                    <span class="portfolio-tag">Mobile App</span>
+                    <h3>Laporan Kehadiran</h3>
+                    <p>Analisis Data Komprehensif</p>
+                    <span class="portfolio-tag">Analytics</span>
                 </div>
             </div>
 
             <div class="portfolio-item">
                 <div class="portfolio-image">
-                    <i class="fas fa-hospital"></i>
+                    <i class="fas fa-user-cog"></i>
                 </div>
                 <div class="portfolio-content">
-                    <h3>Hospital Management System</h3>
-                    <p>RS. Sehat Sejahtera</p>
-                    <span class="portfolio-tag">Healthcare IT</span>
+                    <h3>Manajemen User</h3>
+                    <p>Panel Pengelolaan Karyawan</p>
+                    <span class="portfolio-tag">User Management</span>
                 </div>
             </div>
         </div>
@@ -222,19 +222,19 @@
 <section class="team" id="team">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Tim Kami</h2>
-            <p class="section-subtitle">Profesional Berpengalaman di Bidangnya</p>
+            <h2 class="section-title">Tim Developer</h2>
+            <p class="section-subtitle">Pengembang Sistem yang Berpengalaman</p>
         </div>
         <div class="team-grid">
             <div class="team-member">
                 <div class="team-image">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <h3>Budi Santoso</h3>
-                <p class="team-position">CEO & Founder</p>
+                <h3>Ahmad Rizki</h3>
+                <p class="team-position">System Architect</p>
                 <div class="team-social">
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
                 </div>
             </div>
 
@@ -242,23 +242,11 @@
                 <div class="team-image">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <h3>Siti Rahayu</h3>
-                <p class="team-position">CTO</p>
-                <div class="team-social">
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-
-            <div class="team-member">
-                <div class="team-image">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <h3>Ahmad Fauzi</h3>
+                <h3>Dewi Sartika</h3>
                 <p class="team-position">Lead Developer</p>
                 <div class="team-social">
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
                 </div>
             </div>
 
@@ -266,11 +254,23 @@
                 <div class="team-image">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <h3>Dewi Kusuma</h3>
-                <p class="team-position">Project Manager</p>
+                <h3>Budi Hartono</h3>
+                <p class="team-position">UI/UX Designer</p>
                 <div class="team-social">
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-dribbble"></i></a>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="team-image">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>Rina Sari</h3>
+                <p class="team-position">QA Engineer</p>
+                <div class="team-social">
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
                 </div>
             </div>
         </div>
@@ -281,21 +281,21 @@
 <section class="contact" id="contact">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Hubungi Kami</h2>
-            <p class="section-subtitle">Mari Diskusikan Kebutuhan IT Bisnis Anda</p>
+            <h2 class="section-title">Support Sistem</h2>
+            <p class="section-subtitle">Butuh Bantuan dengan Sistem Absensi? Hubungi Tim Support Kami</p>
         </div>
         <div class="contact-content">
             <div class="contact-info">
-                <h3>Informasi Kontak</h3>
-                <p>Jangan ragu untuk menghubungi kami. Tim kami siap membantu Anda 24/7.</p>
+                <h3>Informasi Support</h3>
+                <p>Tim support kami siap membantu Anda dengan sistem absensi 24/7. Jangan ragu untuk menghubungi kami.</p>
                 
                 <div class="contact-item">
                     <div class="contact-icon">
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <div class="contact-text">
-                        <h4>Alamat</h4>
-                        <p>Jl. Teknologi No. 123<br>Jakarta Selatan, 12345</p>
+                        <h4>Lokasi Server</h4>
+                        <p>Data Center Jakarta<br>Cloud Infrastructure</p>
                     </div>
                 </div>
 
@@ -304,8 +304,8 @@
                         <i class="fas fa-phone"></i>
                     </div>
                     <div class="contact-text">
-                        <h4>Telepon</h4>
-                        <p>+62 21 1234 5678<br>+62 812 3456 7890</p>
+                        <h4>Support Hotline</h4>
+                        <p>+62 21 1234 5678<br>Emergency: +62 811 1234 567</p>
                     </div>
                 </div>
 
@@ -314,8 +314,8 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div class="contact-text">
-                        <h4>Email</h4>
-                        <p>info@pencarierror.com<br>support@pencarierror.com</p>
+                        <h4>Email Support</h4>
+                        <p>support@absensi-system.com<br>admin@absensi-system.com</p>
                     </div>
                 </div>
             </div>
@@ -339,17 +339,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="subject">Subjek</label>
-                        <input type="text" id="subject" name="subject" required>
+                        <label for="subject">Jenis Bantuan</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Pilih Jenis Bantuan</option>
+                            <option value="technical">Masalah Teknis</option>
+                            <option value="rfid">Kartu RFID</option>
+                            <option value="report">Laporan Absensi</option>
+                            <option value="account">Akun Pengguna</option>
+                            <option value="other">Lainnya</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Pesan</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <label for="message">Deskripsi Masalah</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Jelaskan masalah yang Anda alami dengan detail..."></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-paper-plane"></i> Kirim Pesan
+                        <i class="fas fa-life-ring"></i> Kirim Permintaan Bantuan
                     </button>
                 </form>
             </div>

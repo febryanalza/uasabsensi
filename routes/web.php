@@ -44,10 +44,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/activities', [DashboardController::class, 'getRecentActivities'])->name('dashboard.activities');
     Route::get('/dashboard/attendance-chart', [DashboardController::class, 'getAttendanceChart'])->name('dashboard.attendance-chart');
     
-    // Karyawan Management Routes
-    Route::resource('karyawan', KaryawanController::class);
-
-    // Karyawan AJAX API Routes (consolidated)
+// Karyawan management routes
+Route::prefix('karyawan')->middleware('auth')->group(function () {
+    Route::get('/', [KaryawanController::class, 'index'])->name('karyawan.index');
+    Route::get('/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+    Route::get('/{id}', [KaryawanController::class, 'show'])->name('karyawan.show');
+    Route::get('/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+    
+    // API routes for AJAX
+    Route::post('/store', [KaryawanController::class, 'store'])->name('karyawan.store');
+    Route::put('/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
+    Route::delete('/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+    
+    // Get available RFID cards
+    Route::get('/api/available-rfid', [KaryawanController::class, 'getAvailableRfid'])->name('karyawan.available-rfid');
+});    // Karyawan AJAX API Routes (consolidated)
     Route::prefix('karyawan/api')->name('karyawan.api.')->group(function () {
         Route::get('/data', [KaryawanController::class, 'getData'])->name('data');
         Route::get('/statistics', [KaryawanController::class, 'getStatistics'])->name('statistics');

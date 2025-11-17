@@ -5,11 +5,11 @@
                 <!-- Company Info -->
                 <div class="footer-col">
                     <div class="footer-logo">
-                        <i class="fas fa-code"></i>
-                        <span>PT Pencari Error Sejati</span>
+                        <i class="fas fa-user-clock"></i>
+                        <span>Sistem Informasi Absensi Perusahaan</span>
                     </div>
                     <p class="footer-desc">
-                        Solusi IT terpercaya untuk bisnis Anda. Kami menghadirkan inovasi teknologi yang mengubah tantangan menjadi peluang.
+                        Solusi absensi digital terpercaya untuk perusahaan Anda. Kami menghadirkan teknologi RFID modern yang akurat dan efisien.
                     </p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
@@ -24,32 +24,32 @@
                     <h3 class="footer-title">Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="{{ url('/#about') }}">Tentang Kami</a></li>
-                        <li><a href="{{ url('/#services') }}">Layanan</a></li>
-                        <li><a href="{{ url('/#portfolio') }}">Portfolio</a></li>
-                        <li><a href="{{ url('/#contact') }}">Kontak</a></li>
+                        <li><a href="{{ url('/#about') }}">Tentang Sistem</a></li>
+                        <li><a href="{{ url('/#services') }}">Fitur</a></li>
+                        <li><a href="{{ url('/#portfolio') }}">Dashboard</a></li>
+                        <li><a href="{{ url('/#contact') }}">Support</a></li>
                     </ul>
                 </div>
 
                 <!-- Services -->
                 <div class="footer-col">
-                    <h3 class="footer-title">Layanan Kami</h3>
+                    <h3 class="footer-title">Fitur Sistem</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Konsultan IT</a></li>
-                        <li><a href="#">Pengembangan Software</a></li>
-                        <li><a href="#">Cloud Solutions</a></li>
-                        <li><a href="#">IT Support</a></li>
-                        <li><a href="#">Cyber Security</a></li>
+                        <li><a href="#">Absensi RFID</a></li>
+                        <li><a href="#">Monitoring Real-time</a></li>
+                        <li><a href="#">Laporan Kehadiran</a></li>
+                        <li><a href="#">Manajemen Karyawan</a></li>
+                        <li><a href="#">Integrasi Payroll</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact Info -->
                 <div class="footer-col">
-                    <h3 class="footer-title">Hubungi Kami</h3>
+                    <h3 class="footer-title">Informasi Support</h3>
                     <ul class="footer-contact">
                         <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Jl. Teknologi No. 123<br>Jakarta Selatan, 12345</span>
+                            <i class="fas fa-server"></i>
+                            <span>Data Center Jakarta<br>Cloud Infrastructure</span>
                         </li>
                         <li>
                             <i class="fas fa-phone"></i>
@@ -57,11 +57,11 @@
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>
-                            <span>info@pencarierror.com</span>
+                            <span>support@absensi-system.com</span>
                         </li>
                         <li>
                             <i class="fas fa-clock"></i>
-                            <span>Senin - Jumat: 09:00 - 17:00</span>
+                            <span>24/7 System Monitoring</span>
                         </li>
                     </ul>
                 </div>
@@ -72,7 +72,7 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-content">
-                <p>&copy; {{ date('Y') }} PT Pencari Error Sejati. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Sistem Informasi Absensi Perusahaan. All rights reserved.</p>
                 <div class="footer-bottom-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>

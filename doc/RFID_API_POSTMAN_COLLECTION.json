@@ -1,0 +1,486 @@
+{
+  "info": {
+    "name": "RFID Absensi API Testing",
+    "description": "Complete collection for testing RFID Absensi API endpoints",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "1. Test Connection",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/test",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "test"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/test",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "test"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"RFID API Ready\",\n    \"timestamp\": \"2024-01-15 10:30:00\",\n    \"server_time\": \"10:30:00\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "2. Register New RFID Card",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"rfidUid\": \"A1B2C3D4\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/rfid",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid"]
+        }
+      },
+      "response": [
+        {
+          "name": "New Card",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidUid\": \"A1B2C3D4\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid"]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Kartu berhasil didaftarkan\",\n    \"data\": {\n        \"cardNumber\": \"A1B2C3D4\",\n        \"cardType\": \"MIFARE\",\n        \"status\": \"AVAILABLE\",\n        \"isNew\": true,\n        \"isAssigned\": false,\n        \"registeredAt\": \"2024-01-15 10:30:00\"\n    }\n}"
+        },
+        {
+          "name": "Existing Card",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidUid\": \"A1B2C3D4\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Kartu sudah terdaftar\",\n    \"data\": {\n        \"cardNumber\": \"A1B2C3D4\",\n        \"cardType\": \"MIFARE\",\n        \"status\": \"ASSIGNED\",\n        \"isNew\": false,\n        \"isAssigned\": true,\n        \"karyawan\": {\n            \"id\": \"uuid-karyawan\",\n            \"nip\": \"123456\",\n            \"nama\": \"John Doe\",\n            \"email\": \"john@company.com\",\n            \"jabatan\": \"Software Engineer\",\n            \"departemen\": \"IT\"\n        }\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. Scan RFID - Absen Masuk",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/rfid/scan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "scan"]
+        }
+      },
+      "response": [
+        {
+          "name": "Absen Masuk Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid/scan",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "scan"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Absen masuk berhasil\",\n    \"type\": \"masuk\",\n    \"nama\": \"John Doe\",\n    \"nip\": \"123456\",\n    \"waktu\": \"08:05:30\",\n    \"status\": \"HADIR\",\n    \"terlambat\": null\n}"
+        },
+        {
+          "name": "Absen Masuk Terlambat",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid/scan",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "scan"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Absen masuk berhasil\",\n    \"type\": \"masuk\",\n    \"nama\": \"John Doe\",\n    \"nip\": \"123456\",\n    \"waktu\": \"08:20:00\",\n    \"status\": \"HADIR\",\n    \"terlambat\": \"5 menit\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "4. Scan RFID - Absen Keluar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/rfid/scan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "scan"]
+        }
+      },
+      "response": [
+        {
+          "name": "Absen Keluar Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid/scan",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "scan"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Absen keluar berhasil\",\n    \"type\": \"keluar\",\n    \"nama\": \"John Doe\",\n    \"nip\": \"123456\",\n    \"waktu\": \"17:05:00\",\n    \"jam_masuk\": \"08:05:30\",\n    \"jam_keluar\": \"17:05:00\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "5. Error - Card Not Registered",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"rfidCard\": \"UNKNOWN123\",\n    \"lokasi\": \"Kantor\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/rfid/scan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "scan"]
+        }
+      },
+      "response": [
+        {
+          "name": "Card Not Found",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidCard\": \"UNKNOWN123\",\n    \"lokasi\": \"Kantor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid/scan",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "scan"]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [],
+          "body": "{\n    \"success\": false,\n    \"message\": \"Kartu tidak terdaftar\",\n    \"rfid\": \"UNKNOWN123\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "6. Error - Already Complete",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/rfid/scan",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "scan"]
+        }
+      },
+      "response": [
+        {
+          "name": "Already Complete",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rfidCard\": \"A1B2C3D4\",\n    \"lokasi\": \"Kantor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/rfid/scan",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "scan"]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [],
+          "body": "{\n    \"success\": false,\n    \"message\": \"Sudah absen lengkap\",\n    \"nama\": \"John Doe\",\n    \"jam_masuk\": \"08:05:30\",\n    \"jam_keluar\": \"17:05:00\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "7. Check Status - Not Checked In",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "status", "A1B2C3D4"]
+        }
+      },
+      "response": [
+        {
+          "name": "Not Checked In",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "status", "A1B2C3D4"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Belum absen hari ini\",\n    \"nama\": \"John Doe\",\n    \"sudah_masuk\": false,\n    \"sudah_keluar\": false\n}"
+        }
+      ]
+    },
+    {
+      "name": "8. Check Status - Checked In Only",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "status", "A1B2C3D4"]
+        }
+      },
+      "response": [
+        {
+          "name": "Checked In Only",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "status", "A1B2C3D4"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"nama\": \"John Doe\",\n    \"nip\": \"123456\",\n    \"sudah_masuk\": true,\n    \"sudah_keluar\": false,\n    \"jam_masuk\": \"08:05:30\",\n    \"jam_keluar\": null,\n    \"status\": \"HADIR\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "9. Check Status - Complete",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "status", "A1B2C3D4"]
+        }
+      },
+      "response": [
+        {
+          "name": "Complete",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/status/A1B2C3D4",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "status", "A1B2C3D4"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"nama\": \"John Doe\",\n    \"nip\": \"123456\",\n    \"sudah_masuk\": true,\n    \"sudah_keluar\": true,\n    \"jam_masuk\": \"08:05:30\",\n    \"jam_keluar\": \"17:05:00\",\n    \"status\": \"HADIR\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "10. Get All RFID Cards",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid"]
+        }
+      },
+      "response": [
+        {
+          "name": "List All Cards",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": \"uuid-card-1\",\n            \"cardNumber\": \"A1B2C3D4\",\n            \"cardType\": \"MIFARE\",\n            \"status\": \"ASSIGNED\",\n            \"karyawan\": {\n                \"id\": \"uuid-karyawan\",\n                \"nip\": \"123456\",\n                \"nama\": \"John Doe\",\n                \"email\": \"john@company.com\",\n                \"jabatan\": \"Software Engineer\",\n                \"departemen\": \"IT\",\n                \"status\": \"AKTIF\"\n            },\n            \"createdAt\": \"2024-01-15 10:30:00\",\n            \"updatedAt\": \"2024-01-15 10:30:00\"\n        }\n    ],\n    \"pagination\": {\n        \"current_page\": 1,\n        \"total\": 10,\n        \"per_page\": 15\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "11. Get RFID Card Detail",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/A1B2C3D4",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "A1B2C3D4"]
+        }
+      },
+      "response": [
+        {
+          "name": "Card Detail",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/A1B2C3D4",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "A1B2C3D4"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": \"uuid-card\",\n        \"cardNumber\": \"A1B2C3D4\",\n        \"cardType\": \"MIFARE\",\n        \"status\": \"ASSIGNED\",\n        \"assignedAt\": \"2024-01-15 10:30:00\",\n        \"notes\": \"Auto-registered via NodeMCU\",\n        \"karyawan\": {\n            \"id\": \"uuid-karyawan\",\n            \"nip\": \"123456\",\n            \"nama\": \"John Doe\",\n            \"email\": \"john@company.com\",\n            \"jabatan\": \"Software Engineer\",\n            \"departemen\": \"IT\",\n            \"status\": \"AKTIF\"\n        },\n        \"createdAt\": \"2024-01-15 10:30:00\",\n        \"updatedAt\": \"2024-01-15 10:30:00\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "12. Delete RFID Card",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/rfid/A1B2C3D4",
+          "host": ["{{base_url}}"],
+          "path": ["api", "rfid", "A1B2C3D4"]
+        }
+      },
+      "response": [
+        {
+          "name": "Delete Success",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/rfid/A1B2C3D4",
+              "host": ["{{base_url}}"],
+              "path": ["api", "rfid", "A1B2C3D4"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [],
+          "body": "{\n    \"success\": true,\n    \"message\": \"Kartu RFID berhasil dihapus\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "production_url",
+      "value": "https://absensi.fazcreateve.my.id",
+      "type": "string"
+    }
+  ]
+}

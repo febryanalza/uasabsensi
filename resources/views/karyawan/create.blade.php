@@ -261,13 +261,24 @@
                         RFID Card Number
                         <span class="text-sm text-gray-500">(Optional)</span>
                     </label>
-                    <input type="text" 
-                           name="rfid_card" 
-                           id="rfid_card" 
-                           x-model="formData.rfid_card"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.rfid_card ? 'border-red-500' : ''"
-                           placeholder="Nomor kartu RFID">
+                    <div class="relative">
+                        <select name="rfid_card" 
+                                id="rfid_card" 
+                                x-model="formData.rfid_card"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
+                                :class="errors.rfid_card ? 'border-red-500' : ''">
+                            <option value="">Pilih kartu RFID (opsional)</option>
+                            <template x-for="rfid in availableRfidCards" :key="rfid.id">
+                                <option :value="rfid.card_number" 
+                                        x-text="rfid.card_number + ' (' + rfid.card_type + ')'">
+                                </option>
+                            </template>
+                        </select>
+                        <div x-show="loadingRfidCards" class="absolute right-3 top-3">
+                            <div class="w-5 h-5 spinner"></div>
+                        </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">Kartu RFID akan digunakan untuk sistem absensi</p>
                     <p x-show="errors.rfid_card" x-text="errors.rfid_card" class="mt-1 text-sm text-red-600"></p>
                 </div>
             </div>
@@ -328,10 +339,35 @@ function createKaryawanData() {
         },
         errors: {},
         loading: false,
+        availableRfidCards: [],
+        loadingRfidCards: false,
         
         init() {
             // Set default date for tanggal_bergabung
             this.formData.tanggal_bergabung = new Date().toISOString().split('T')[0];
+            
+            // Load available RFID cards
+            this.loadAvailableRfidCards();
+        },
+        
+        async loadAvailableRfidCards() {
+            this.loadingRfidCards = true;
+            try {
+                const response = await fetch('/karyawan/api/available-rfid');
+                const data = await response.json();
+                
+                if (data.success) {
+                    this.availableRfidCards = data.data;
+                } else {
+                    console.error('Failed to load RFID cards:', data.message);
+                    showNotification('warning', 'Gagal memuat data kartu RFID');
+                }
+            } catch (error) {
+                console.error('Error loading RFID cards:', error);
+                showNotification('error', 'Terjadi kesalahan saat memuat kartu RFID');
+            } finally {
+                this.loadingRfidCards = false;
+            }
         },
         
         async submitForm() {
@@ -345,7 +381,7 @@ function createKaryawanData() {
                 // Remove currency formatting from gaji_pokok
                 submitData.gaji_pokok = this.parseCurrency(submitData.gaji_pokok);
                 
-                const response = await fetch('/karyawan/api/store', {
+                const response = await fetch('/karyawan/store', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

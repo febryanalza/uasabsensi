@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title', 'PT Pencari Error Sejati - Konsultan IT & Jasa IT')</title>
-    <meta name="description" content="PT Pencari Error Sejati adalah perusahaan konsultan IT terpercaya yang menyediakan solusi teknologi informasi lengkap untuk bisnis Anda.">
+    <title>@yield('title', 'Sistem Informasi Absensi Perusahaan - Kelola Kehadiran Karyawan')</title>
+    <meta name="description" content="Sistem Informasi Absensi Perusahaan adalah platform digital terpercaya untuk mengelola kehadiran karyawan dengan teknologi RFID modern.">
     
     <!-- Local Fonts & Icons (No CDN dependencies) -->
     <style>

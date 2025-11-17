@@ -157,7 +157,30 @@ class KaryawanController extends Controller
     }
 
     /**
-     * Store a newly created karyawan
+     * Get available RFID cards for dropdown
+     */
+    public function getAvailableRfid()
+    {
+        try {
+            $rfidCards = AvailableRfid::where('status', 'AVAILABLE')
+                ->orderBy('card_number')
+                ->get(['id', 'card_number', 'card_type', 'status']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $rfidCards
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data RFID',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Store a newly created karyawan via API
      */
     public function store(Request $request)
     {
@@ -178,6 +201,7 @@ class KaryawanController extends Controller
             'tunjangan_makan' => 'nullable|numeric|min:0',
             'password' => 'required|string|min:8',
             'role' => 'nullable|in:ADMIN,MANAGER,USER',
+            'rfid_card' => 'nullable|string|exists:available_rfid,card_number',
         ]);
 
         if ($validator->fails()) {
