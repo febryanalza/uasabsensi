@@ -231,18 +231,38 @@
                 </div>
             </div>
 
-            <!-- Lembur -->
-            <div class="flex items-center px-4 py-3 text-sm font-medium text-gray-400 cursor-not-allowed rounded-lg">
-                <i class="fas fa-clock w-5 h-5 mr-3"></i>
-                Management Lembur
-                <span class="ml-2 px-2 py-1 text-xs bg-gray-200 text-gray-500 rounded-full">Soon</span>
-            </div>
-
             <!-- Aturan Perusahaan -->
-            <div class="flex items-center px-4 py-3 text-sm font-medium text-gray-400 cursor-not-allowed rounded-lg">
-                <i class="fas fa-cogs w-5 h-5 mr-3"></i>
-                Aturan Perusahaan
-                <span class="ml-2 px-2 py-1 text-xs bg-gray-200 text-gray-500 rounded-full">Soon</span>
+            <div x-data="{ expanded: {{ request()->routeIs('aturan*') ? 'true' : 'false' }} }">
+                <button @click="expanded = !expanded"
+                        class="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-gavel w-5 h-5 mr-3"></i>
+                        Aturan Perusahaan
+                    </div>
+                    <i class="fas fa-chevron-down transform transition-transform duration-200"
+                       :class="expanded ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="expanded" 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 transform -translate-y-2"
+                     x-transition:enter-end="opacity-100 transform translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 transform translate-y-0"
+                     x-transition:leave-end="opacity-0 transform -translate-y-2"
+                     class="ml-8 mt-2 space-y-1">
+                    <a href="{{ route('aturan.index') }}" 
+                       class="flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200"
+                       :class="currentPage === 'aturan.index' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'">
+                        <i class="fas fa-list w-4 h-4 mr-3"></i>
+                        Daftar Aturan
+                    </a>
+                    <a href="{{ route('aturan.create') }}" 
+                       class="flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200"
+                       :class="currentPage === 'aturan.create' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'">
+                        <i class="fas fa-plus w-4 h-4 mr-3"></i>
+                        Tambah Aturan
+                    </a>
+                </div>
             </div>
         </nav>
 

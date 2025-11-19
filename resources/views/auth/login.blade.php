@@ -154,7 +154,7 @@
 
                     <form method="POST" action="{{ route('login') }}" x-on:submit="loading = true" id="loginForm">
                         @csrf
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">\n                        
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">                      
                         <!-- Email -->
                         <div class="mb-6">
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
@@ -243,31 +243,6 @@
                             </span>
                         </button>
                     </form>
-
-                    <!-- Divider -->
-                    <div class="mt-8 mb-6">
-                        <div class="relative">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-gray-300"></div>
-                            </div>
-                            <div class="relative flex justify-center text-sm">
-                                <span class="px-2 bg-white text-gray-500">atau</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Register Link -->
-                    @if (Route::has('register'))
-                    <div class="text-center">
-                        <p class="text-sm text-gray-600">
-                            Belum punya akun? 
-                            <a href="{{ route('register') }}" 
-                               class="font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                                Daftar sekarang
-                            </a>
-                        </p>
-                    </div>
-                    @endif
                 </div>
 
                 <!-- Footer Info -->

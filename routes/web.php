@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\KaryawanController;
 use App\Http\Controllers\Web\AbsensiController;
 use App\Http\Controllers\Web\GajiController;
+use App\Http\Controllers\Web\AturanPerusahaanController;
 
 // Homepage - Company Profile (Main)
 Route::get('/', function () {
@@ -111,12 +112,28 @@ Route::prefix('karyawan')->middleware('auth')->group(function () {
         Route::delete('/{id}/delete', [GajiController::class, 'deleteGaji']);
     });
 
-    // Future routes untuk management lain
-    // Route::prefix('lembur')->name('lembur.')->group(function () {
-    //     Route::get('/', [LemburController::class, 'index'])->name('index');
-    // });
-    
-    // Route::prefix('aturan-perusahaan')->name('aturan.')->group(function () {
-    //     Route::get('/', [AturanPerusahaanController::class, 'index'])->name('index');
-    // });
+    // Aturan Perusahaan routes
+    Route::prefix('aturan')->name('aturan.')->group(function () {
+        Route::get('/', [AturanPerusahaanController::class, 'index'])->name('index');
+        Route::get('/create', [AturanPerusahaanController::class, 'create'])->name('create');
+        Route::post('/store', [AturanPerusahaanController::class, 'store'])->name('store');
+        Route::get('/{id}', [AturanPerusahaanController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [AturanPerusahaanController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AturanPerusahaanController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AturanPerusahaanController::class, 'destroy'])->name('destroy');
+    });
+});
+
+// API Routes (outside auth middleware)
+Route::prefix('api')->group(function () {
+    // Aturan Perusahaan API routes
+    Route::prefix('aturan')->group(function () {
+        Route::get('/', [AturanPerusahaanController::class, 'apiIndex']); // Get active rule
+        Route::get('/all', [AturanPerusahaanController::class, 'apiAll']); // Get all rules
+        Route::post('/', [AturanPerusahaanController::class, 'store']);
+        Route::get('/{id}', [AturanPerusahaanController::class, 'show']);
+        Route::put('/{id}', [AturanPerusahaanController::class, 'update']);
+        Route::delete('/{id}', [AturanPerusahaanController::class, 'destroy']);
+        Route::patch('/{id}/toggle', [AturanPerusahaanController::class, 'toggleActive']); // Toggle active status
+    });
 });

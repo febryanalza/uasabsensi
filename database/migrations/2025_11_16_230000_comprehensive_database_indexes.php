@@ -29,7 +29,7 @@ return new class extends Migration
                 // Index untuk login dan authentication
                 $this->addIndexIfNotExists('users', ['email', 'role'], 'idx_users_email_role');
             } catch (\Exception $e) {
-                \Log::info('Users indexes may already exist: ' . $e->getMessage());
+                Log::info('Users indexes may already exist: ' . $e->getMessage());
             }
         });
 
@@ -63,7 +63,7 @@ return new class extends Migration
                 // Salary calculation indexes
                 $this->addIndexIfNotExists('karyawan', 'gaji_pokok', 'idx_karyawan_gaji_pokok');
             } catch (\Exception $e) {
-                \Log::info('Karyawan indexes may already exist: ' . $e->getMessage());
+                Log::info('Karyawan indexes may already exist: ' . $e->getMessage());
             }
         });
 
@@ -102,7 +102,7 @@ return new class extends Migration
                 $this->addCompositeIndexForDateRange('absensi', 'tanggal');
                 
             } catch (\Exception $e) {
-                \Log::info('Absensi indexes may already exist: ' . $e->getMessage());
+                Log::info('Absensi indexes may already exist: ' . $e->getMessage());
             }
         });
 
@@ -130,7 +130,7 @@ return new class extends Migration
                 $this->addIndexIfNotExists('gaji', 'jumlah_hadir', 'idx_gaji_hadir');
                 $this->addIndexIfNotExists('gaji', 'jumlah_alpha', 'idx_gaji_alpha');
             } catch (\Exception $e) {
-                \Log::info('Gaji indexes may already exist: ' . $e->getMessage());
+                Log::info('Gaji indexes may already exist: ' . $e->getMessage());
             }
         });
 
@@ -147,7 +147,7 @@ return new class extends Migration
                     $this->addIndexIfNotExists('lembur', 'jam_mulai', 'idx_lembur_jam_mulai');
                     $this->addIndexIfNotExists('lembur', 'jam_selesai', 'idx_lembur_jam_selesai');
                 } catch (\Exception $e) {
-                    \Log::info('Lembur indexes may already exist: ' . $e->getMessage());
+                    Log::info('Lembur indexes may already exist: ' . $e->getMessage());
                 }
             });
         }

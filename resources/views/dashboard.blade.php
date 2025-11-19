@@ -171,53 +171,7 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="bg-white rounded-xl p-6 card-shadow">
-        <h3 class="text-lg font-semibold text-gray-900 mb-6">Aksi Cepat</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <a href="{{ route('karyawan.create') }}" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                    <i class="fas fa-user-plus text-blue-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900">Tambah Karyawan</p>
-                    <p class="text-xs text-gray-500">Registrasi karyawan baru</p>
-                </div>
-            </a>
-
-            <a href="#" onclick="alert('Fitur akan segera tersedia')" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                    <i class="fas fa-calculator text-green-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900">Hitung Gaji</p>
-                    <p class="text-xs text-gray-500">Proses perhitungan gaji</p>
-                </div>
-            </a>
-
-            <a href="#" onclick="alert('Fitur akan segera tersedia')" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-yellow-300 hover:bg-yellow-50 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-                    <i class="fas fa-file-excel text-yellow-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900">Export Data</p>
-                    <p class="text-xs text-gray-500">Download laporan</p>
-                </div>
-            </a>
-
-            <a href="#" onclick="alert('Fitur akan segera tersedia')" 
-               class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                    <i class="fas fa-cogs text-purple-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-900">Pengaturan</p>
-                    <p class="text-xs text-gray-500">Konfigurasi sistem</p>
-                </div>
-            </a>
+    <!-- Dashboard content continues without Quick Actions section -->
         </div>
     </div>
 </div>
