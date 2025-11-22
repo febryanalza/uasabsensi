@@ -72,6 +72,14 @@ class Karyawan extends Model
      */
     public function rfidCard()
     {
+        return $this->hasOne(AvailableRfid::class, 'karyawan_id', 'id');
+    }
+
+    /**
+     * Get the RFID card via card number (legacy relationship)
+     */
+    public function rfidCardByNumber()
+    {
         return $this->belongsTo(AvailableRfid::class, 'rfid_card_number', 'card_number');
     }
 

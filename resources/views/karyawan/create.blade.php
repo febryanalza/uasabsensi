@@ -414,10 +414,18 @@ function createKaryawanData() {
                 
                 if (response.ok && data.success) {
                     showNotification('success', 'Karyawan berhasil ditambahkan');
-                    // Redirect to karyawan list after 1 second
-                    setTimeout(() => {
+                    
+                    // Trigger real-time update untuk semua tab yang terbuka
+                    this.triggerRealTimeUpdate(data.data);
+                    
+                    // Reset form
+                    this.resetForm();
+                    
+                    // Optional: Redirect to karyawan list atau tetap di form untuk input berikutnya
+                    const shouldRedirect = confirm('Karyawan berhasil ditambahkan! Apakah Anda ingin kembali ke daftar karyawan?');
+                    if (shouldRedirect) {
                         window.location.href = '{{ route("karyawan.index") }}';
-                    }, 1000);
+                    }
                 } else {
                     // Handle validation errors
                     if (data.errors) {
@@ -469,6 +477,30 @@ function createKaryawanData() {
         parseCurrency(value) {
             if (!value) return 0;
             return parseInt(value.replace(/[^\d]/g, '')) || 0;
+        },
+        
+        // Real-time update methods
+        triggerRealTimeUpdate(newKaryawan) {
+            // Use the global real-time notification system
+            if (window.realTimeNotifications) {
+                window.realTimeNotifications.broadcast('create', newKaryawan);
+            } else {
+                // Fallback untuk backward compatibility
+                localStorage.setItem('karyawan_update', JSON.stringify({
+                    action: 'create',
+                    data: newKaryawan,
+                    timestamp: new Date().getTime()
+                }));
+                
+                window.dispatchEvent(new CustomEvent('karyawanUpdated', {
+                    detail: {
+                        action: 'create',
+                        data: newKaryawan
+                    }
+                }));
+            }
+            
+            console.log('✅ Real-time update triggered for new karyawan:', newKaryawan);
         }
     }
 }

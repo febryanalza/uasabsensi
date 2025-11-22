@@ -18,6 +18,9 @@
     <!-- Chart.js untuk statistik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Real-time Notifications System -->
+    <script src="{{ asset('js/realtime-notifications.js') }}"></script>
+    
     <!-- Custom styles -->
     <style>
         .sidebar-transition {

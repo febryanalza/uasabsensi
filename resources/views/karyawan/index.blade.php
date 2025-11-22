@@ -17,11 +17,19 @@
 @endsection
 
 @section('header-actions')
-<a href="{{ route('karyawan.create') }}" 
-   class="btn-primary text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
-    <i class="fas fa-plus mr-2"></i>
-    Tambah Karyawan
-</a>
+<div class="flex items-center space-x-3">
+    <!-- Real-time Status Indicator -->
+    <div class="hidden lg:flex items-center space-x-2 text-sm text-gray-500">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span>Live Updates</span>
+    </div>
+    
+    <a href="{{ route('karyawan.create') }}" 
+       class="btn-primary text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Karyawan
+    </a>
+</div>
 @endsection
 
 @section('content')
@@ -363,6 +371,8 @@ function karyawanData() {
             status: '',
             departemen: ''
         },
+        lastUpdateCheck: new Date().getTime(),
+        autoRefreshInterval: null,
         pagination: {
             current_page: 1,
             per_page: 10,
@@ -384,6 +394,188 @@ function karyawanData() {
         async init() {
             await this.loadStatistics();
             await this.loadKaryawan();
+            
+            // Setup real-time listeners
+            this.setupRealTimeListeners();
+            
+            // Setup auto refresh setiap 30 detik
+            this.setupAutoRefresh();
+        },
+        
+        // Real-time update methods
+        setupRealTimeListeners() {
+            // Register dengan global real-time notification system
+            if (window.realTimeNotifications) {
+                // Register callbacks untuk berbagai event
+                window.realTimeNotifications.on('create', (data) => {
+                    this.handleRealTimeUpdate(data);
+                });
+                
+                window.realTimeNotifications.on('update', (data) => {
+                    this.handleRealTimeUpdate(data);
+                });
+                
+                window.realTimeNotifications.on('delete', (data) => {
+                    this.handleRealTimeUpdate(data);
+                });
+                
+                window.realTimeNotifications.on('visibility_change', () => {
+                    this.refreshDataOnFocus();
+                });
+                
+                window.realTimeNotifications.on('network_change', (data) => {
+                    if (data.online) {
+                        this.silentRefresh();
+                    }
+                });
+            } else {
+                // Fallback ke system lama
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'karyawan_update') {
+                        const updateData = JSON.parse(e.newValue);
+                        if (updateData && updateData.timestamp > this.lastUpdateCheck) {
+                            this.handleRealTimeUpdate(updateData);
+                            this.lastUpdateCheck = updateData.timestamp;
+                        }
+                    }
+                });
+                
+                window.addEventListener('karyawanUpdated', (e) => {
+                    this.handleRealTimeUpdate(e.detail);
+                });
+                
+                window.addEventListener('focus', () => {
+                    this.refreshDataOnFocus();
+                });
+            }
+        },
+        
+        setupAutoRefresh() {
+            // Auto refresh setiap 30 detik untuk memastikan data selalu up to date
+            this.autoRefreshInterval = setInterval(() => {
+                this.silentRefresh();
+            }, 30000);
+            
+            // Clear interval saat page unload
+            window.addEventListener('beforeunload', () => {
+                if (this.autoRefreshInterval) {
+                    clearInterval(this.autoRefreshInterval);
+                }
+            });
+        },
+        
+        async handleRealTimeUpdate(updateData) {
+            console.log('🔄 Handling real-time update:', updateData);
+            
+            // Cek apakah update dari tab lain atau dari local
+            const isRemoteUpdate = updateData.source === 'remote';
+            
+            switch(updateData.action) {
+                case 'create':
+                    // Refresh data untuk menampilkan karyawan baru
+                    await this.refreshData();
+                    if (isRemoteUpdate) {
+                        showNotification('info', `✨ Karyawan baru \"${updateData.data.nama}\" ditambahkan di tab lain`);
+                    } else {
+                        showNotification('success', `✅ Karyawan \"${updateData.data.nama}\" berhasil ditambahkan`);
+                    }
+                    break;
+                case 'update':
+                    await this.refreshData();
+                    const updateMsg = isRemoteUpdate ? '🔄 Data karyawan diperbarui di tab lain' : '✅ Data karyawan berhasil diperbarui';
+                    showNotification('info', updateMsg);
+                    break;
+                case 'delete':
+                    await this.refreshData();
+                    const deleteMsg = isRemoteUpdate ? '🗑️ Data karyawan dihapus di tab lain' : '✅ Data karyawan berhasil dihapus';
+                    showNotification('warning', deleteMsg);
+                    break;
+            }
+            
+            // Update last check timestamp
+            this.lastUpdateCheck = new Date().getTime();
+        },
+        
+        async refreshDataOnFocus() {
+            // Check jika sudah lama tidak update (lebih dari 5 menit)
+            const now = new Date().getTime();
+            if (now - this.lastUpdateCheck > 300000) { // 5 minutes
+                await this.refreshData();
+                this.lastUpdateCheck = now;
+            }
+        },
+        
+        async silentRefresh() {
+            // Silent refresh tanpa loading indicator
+            try {
+                const timestamp = new Date().getTime();
+                const [karyawanResponse, statsResponse] = await Promise.all([
+                    fetch(`/karyawan/api/data?${new URLSearchParams({
+                        search: this.searchQuery,
+                        status: this.filters.status,
+                        departemen: this.filters.departemen,
+                        page: this.pagination.current_page,
+                        per_page: this.pagination.per_page,
+                        _t: timestamp
+                    })}`, {
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    }),
+                    fetch(`/karyawan/api/statistics?_t=${timestamp}`, {
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    })
+                ]);
+                
+                if (karyawanResponse.ok && statsResponse.ok) {
+                    const karyawanData = await karyawanResponse.json();
+                    const statsData = await statsResponse.json();
+                    
+                    // Update data hanya jika ada perubahan
+                    if (JSON.stringify(this.karyawanList) !== JSON.stringify(karyawanData.data.data)) {
+                        console.log('🔄 Silent refresh: Data changed, updating list');
+                        this.karyawanList = karyawanData.data.data;
+                        this.pagination = {
+                            current_page: karyawanData.data.current_page,
+                            last_page: karyawanData.data.last_page,
+                            per_page: karyawanData.data.per_page,
+                            total: karyawanData.data.total,
+                            from: karyawanData.data.from,
+                            to: karyawanData.data.to
+                        };
+                    } else {
+                        console.log('✓ Silent refresh: No changes detected');
+                    }
+                    
+                    if (JSON.stringify(this.statistics) !== JSON.stringify(statsData.data)) {
+                        this.statistics = {
+                            total: statsData.data.total_karyawan,
+                            aktif: statsData.data.karyawan_aktif,
+                            cuti: statsData.data.karyawan_cuti,
+                            resign: statsData.data.karyawan_resign
+                        };
+                    }
+                }
+            } catch (error) {
+                console.log('Silent refresh failed:', error);
+            }
+        },
+        
+        async refreshData() {
+            // Refresh dengan loading indicator
+            this.loading = true;
+            try {
+                await Promise.all([
+                    this.loadKaryawan(),
+                    this.loadStatistics()
+                ]);
+            } finally {
+                this.loading = false;
+            }
         },
         
         async loadStatistics() {
@@ -403,10 +595,12 @@ function karyawanData() {
         async loadKaryawan() {
             try {
                 this.loading = true;
+                console.log('🔄 Loading karyawan data for page:', this.pagination.current_page);
                 
                 const params = new URLSearchParams({
                     page: this.pagination.current_page,
-                    per_page: this.pagination.per_page
+                    per_page: this.pagination.per_page,
+                    _t: new Date().getTime() // Cache busting parameter
                 });
                 
                 if (this.searchQuery) {
@@ -421,12 +615,18 @@ function karyawanData() {
                     params.append('departemen', this.filters.departemen);
                 }
                 
-                const response = await fetch(`/karyawan/api/data?${params.toString()}`);
+                const response = await fetch(`/karyawan/api/data?${params.toString()}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
                 
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
                         this.karyawanList = data.data.data || [];
+                        console.log('✅ Loaded', this.karyawanList.length, 'karyawan for page', data.data.current_page);
                         
                         // Update pagination info
                         if (data.data.current_page) {
@@ -495,6 +695,10 @@ function karyawanData() {
                     if (data.success) {
                         showNotification('success', 'Karyawan berhasil dihapus');
                         this.showDeleteModal = false;
+                        
+                        // Trigger real-time update
+                        this.triggerRealTimeUpdate('delete', this.selectedKaryawan);
+                        
                         await this.loadKaryawan();
                         await this.loadStatistics();
                     } else {
@@ -554,6 +758,28 @@ function karyawanData() {
             }
             
             return range.filter((v, i, arr) => arr.indexOf(v) === i);
+        },
+        
+        // Trigger real-time update untuk komunikasi antar tab
+        triggerRealTimeUpdate(action, data) {
+            // Use the global real-time notification system
+            if (window.realTimeNotifications) {
+                window.realTimeNotifications.broadcast(action, data);
+            } else {
+                // Fallback untuk backward compatibility
+                const updateData = {
+                    action: action,
+                    data: data,
+                    timestamp: new Date().getTime()
+                };
+                
+                localStorage.setItem('karyawan_update', JSON.stringify(updateData));
+                window.dispatchEvent(new CustomEvent('karyawanUpdated', {
+                    detail: updateData
+                }));
+            }
+            
+            console.log('📡 Real-time update broadcasted:', { action, data });
         },
         
         // Helper methods

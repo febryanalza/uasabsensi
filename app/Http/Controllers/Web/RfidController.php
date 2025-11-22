@@ -20,11 +20,47 @@ class RfidController extends Controller
     }
 
     /**
+     * Debug page for RFID management
+     */
+    public function debug()
+    {
+        return view('rfid.debug');
+    }
+
+    /**
+     * Test direct count for debugging
+     */
+    public function testCount()
+    {
+        try {
+            $count = AvailableRfid::count();
+            $allCards = AvailableRfid::all();
+            $firstCard = AvailableRfid::first();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Direct database query test',
+                'total_count' => $count,
+                'all_cards_count' => $allCards->count(),
+                'first_card' => $firstCard,
+                'table_name' => (new AvailableRfid)->getTable(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Test count error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Get RFID cards data for listing (AJAX)
      */
     public function getData(Request $request)
     {
         try {
+            Log::info('RFID getData called', ['request' => $request->all()]);
             $query = AvailableRfid::with(['karyawan:id,nip,nama,departemen,jabatan']);
 
             // Search functionality
@@ -68,6 +104,12 @@ class RfidController extends Controller
             $perPage = $request->get('per_page', 15);
             $cards = $query->paginate($perPage);
 
+            Log::info('RFID getData result', [
+                'total' => $cards->total(),
+                'items_count' => count($cards->items()),
+                'first_item' => $cards->items() ? $cards->items()[0] ?? null : null
+            ]);
+
             return response()->json([
                 'success' => true,
                 'data' => $cards->items(),
@@ -96,6 +138,7 @@ class RfidController extends Controller
     public function getStatistics()
     {
         try {
+            Log::info('RFID getStatistics called');
             $stats = [
                 'total_cards' => AvailableRfid::count(),
                 'available_cards' => AvailableRfid::where('status', 'AVAILABLE')->count(),
@@ -113,6 +156,8 @@ class RfidController extends Controller
                                       ->orderBy('created_at', 'desc')
                                       ->limit(10)
                                       ->get();
+
+            Log::info('RFID getStatistics result', ['stats' => $stats, 'recent_count' => $recentCards->count()]);
 
             return response()->json([
                 'success' => true,

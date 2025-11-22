@@ -1,74 +1,88 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Tambah Aturan Perusahaan')
+@section('page-title', 'Tambah Aturan Perusahaan')
+
+@section('breadcrumb')
+<li class="inline-flex items-center">
+    <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-home mr-2"></i>
+        Dashboard
+    </a>
+</li>
+<li class="inline-flex items-center">
+    <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+    <a href="{{ route('aturan.index') }}" class="text-gray-500 hover:text-gray-700">Aturan Perusahaan</a>
+</li>
+<li class="inline-flex items-center">
+    <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+    <span class="text-gray-700 font-medium">Tambah Aturan</span>
+</li>
+@endsection
+
+@section('header-actions')
+<a href="{{ route('aturan.index') }}" 
+   class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200">
+    <i class="fas fa-arrow-left mr-2"></i>
+    Kembali
+</a>
+@endsection
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <!-- Header -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-1 text-dark fw-bold">Tambah Aturan Perusahaan</h4>
-                            <p class="text-muted mb-0">Buat aturan dan kebijakan perusahaan baru</p>
-                        </div>
-                        <a href="{{ route('aturan.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Kembali
-                        </a>
-                    </div>
-                </div>
-            </div>
+<div class="space-y-6">
 
-            <!-- Form -->
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    @if($errors->any())
-                    <div class="alert alert-danger mb-4">
-                        <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
+    <!-- Form -->
+    <div class="bg-white rounded-xl p-6 card-shadow">
+        @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
+            <ul class="list-disc list-inside">
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
                     <form action="{{ route('aturan.store') }}" method="POST">
                         @csrf
                         
-                        <!-- Jam Kerja Section -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h5 class="text-primary mb-3">
-                                    <i class="fas fa-clock me-2"></i>Jam Kerja
-                                </h5>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="jam_masuk_kerja" class="form-label">Jam Masuk Kerja <span class="text-danger">*</span></label>
-                                <input type="time" 
-                                       name="jam_masuk_kerja" 
-                                       id="jam_masuk_kerja" 
-                                       class="form-control @error('jam_masuk_kerja') is-invalid @enderror"
-                                       value="{{ old('jam_masuk_kerja', '08:00') }}" 
-                                       required>
-                                @error('jam_masuk_kerja')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="jam_pulang_kerja" class="form-label">Jam Pulang Kerja <span class="text-danger">*</span></label>
-                                <input type="time" 
-                                       name="jam_pulang_kerja" 
-                                       id="jam_pulang_kerja" 
-                                       class="form-control @error('jam_pulang_kerja') is-invalid @enderror"
-                                       value="{{ old('jam_pulang_kerja', '17:00') }}" 
-                                       required>
-                                @error('jam_pulang_kerja')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+        <!-- Jam Kerja Section -->
+        <div class="border-b border-gray-200 pb-6 mb-6">
+            <h3 class="text-lg font-semibold text-blue-600 mb-4">
+                <i class="fas fa-clock mr-2"></i>Jam Kerja
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="jam_masuk_kerja" class="block text-sm font-medium text-gray-700 mb-2">
+                        Jam Masuk Kerja <span class="text-red-500">*</span>
+                    </label>
+                    <input type="time" 
+                           name="jam_masuk_kerja" 
+                           id="jam_masuk_kerja" 
+                           class="block w-full px-3 py-2 border @error('jam_masuk_kerja') border-red-300 @else border-gray-300 @enderror rounded-lg input-focus"
+                           value="{{ old('jam_masuk_kerja', '08:00') }}" 
+                           required>
+                    @error('jam_masuk_kerja')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="jam_pulang_kerja" class="block text-sm font-medium text-gray-700 mb-2">
+                        Jam Pulang Kerja <span class="text-red-500">*</span>
+                    </label>
+                    <input type="time" 
+                           name="jam_pulang_kerja" 
+                           id="jam_pulang_kerja" 
+                           class="block w-full px-3 py-2 border @error('jam_pulang_kerja') border-red-300 @else border-gray-300 @enderror rounded-lg input-focus"
+                           value="{{ old('jam_pulang_kerja', '17:00') }}" 
+                           required>
+                    @error('jam_pulang_kerja')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
 
                         <!-- Aturan Keterlambatan Section -->
                         <div class="row mb-4">

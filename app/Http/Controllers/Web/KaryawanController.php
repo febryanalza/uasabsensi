@@ -48,10 +48,15 @@ class KaryawanController extends Controller
                     $query->where('jabatan', $request->jabatan);
                 }
 
-                // Sorting
-                $sortBy = $request->get('sort_by', 'nama');
-                $sortOrder = $request->get('sort_order', 'asc');
+                // Sorting - default terbaru dulu untuk real-time updates
+                $sortBy = $request->get('sort_by', 'created_at');
+                $sortOrder = $request->get('sort_order', 'desc');
                 $query->orderBy($sortBy, $sortOrder);
+                
+                // Secondary sort by nama untuk consistency
+                if ($sortBy !== 'nama') {
+                    $query->orderBy('nama', 'asc');
+                }
 
                 // Pagination
                 $perPage = $request->get('per_page', 10);
@@ -107,61 +112,65 @@ class KaryawanController extends Controller
     }
 
     /**
-     * Get karyawan data with performance optimization
+     * Get karyawan data with real-time updates (no caching)
      */
     public function getData(Request $request)
     {
         try {
-            // Create cache key based on request parameters
-            $cacheKey = 'karyawan_data_' . md5(serialize($request->all()));
+            // Select only needed fields for web interface dengan created_at untuk sorting
+            $query = Karyawan::select([
+                'id', 'nip', 'nama', 'email', 'jabatan', 'departemen',
+                'telepon', 'status', 'tanggal_masuk', 'gaji_pokok', 'created_at'
+            ]);
+
+            // Conditionally load relations
+            if ($request->get('with_user', false)) {
+                $query->with('user:id,karyawan_id,email,role,is_active');
+            }
+
+            // Optimized filters
+            if ($request->has('status') && $request->status !== '') {
+                $query->where('status', $request->status);
+            }
+
+            if ($request->has('departemen') && $request->departemen !== '') {
+                $query->where('departemen', $request->departemen);
+            }
+
+            if ($request->has('jabatan') && $request->jabatan !== '') {
+                $query->where('jabatan', 'LIKE', $request->jabatan . '%');
+            }
+
+            // Optimized search
+            if ($request->has('search') && !empty(trim($request->search))) {
+                $search = trim($request->search);
+                $query->where(function($q) use ($search) {
+                    $q->where('nama', 'LIKE', $search . '%')
+                      ->orWhere('nip', 'LIKE', $search . '%');
+                });
+            }
+
+            // Sorting - default terbaru dulu untuk real-time updates
+            $orderBy = $request->get('order_by', 'created_at');
+            $orderDir = in_array($request->get('order_dir'), ['asc', 'desc']) ? $request->get('order_dir') : 'desc';
+            $query->orderBy($orderBy, $orderDir);
             
-            $result = cache()->remember($cacheKey, 300, function () use ($request) { // 5 minutes cache
-                // Select only needed fields for web interface
-                $query = Karyawan::select([
-                    'id', 'nip', 'nama', 'email', 'jabatan', 'departemen',
-                    'telepon', 'status', 'tanggal_masuk', 'gaji_pokok'
-                ]);
+            // Secondary sort by nama untuk consistency
+            if ($orderBy !== 'nama') {
+                $query->orderBy('nama', 'asc');
+            }
 
-                // Conditionally load relations
-                if ($request->get('with_user', false)) {
-                    $query->with('user:id,karyawan_id,email,role,is_active');
-                }
-
-                // Optimized filters
-                if ($request->has('status') && $request->status !== '') {
-                    $query->where('status', $request->status);
-                }
-
-                if ($request->has('departemen') && $request->departemen !== '') {
-                    $query->where('departemen', $request->departemen);
-                }
-
-                if ($request->has('jabatan') && $request->jabatan !== '') {
-                    $query->where('jabatan', 'LIKE', $request->jabatan . '%');
-                }
-
-                // Optimized search
-                if ($request->has('search') && !empty(trim($request->search))) {
-                    $search = trim($request->search);
-                    $query->where(function($q) use ($search) {
-                        $q->where('nama', 'LIKE', $search . '%')
-                          ->orWhere('nip', 'LIKE', $search . '%');
-                    });
-                }
-
-                // Optimized pagination
-                $perPage = min($request->get('per_page', 15), 50);
-                $orderBy = $request->get('order_by', 'nama');
-                $orderDir = in_array($request->get('order_dir'), ['asc', 'desc']) ? $request->get('order_dir') : 'asc';
-                
-                return $query->orderBy($orderBy, $orderDir)->paginate($perPage);
-            });
+            // Optimized pagination
+            $perPage = min($request->get('per_page', 15), 50);
+            $result = $query->paginate($perPage);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data karyawan berhasil diambil',
                 'data' => $result
-            ])->header('Cache-Control', 'public, max-age=300');
+            ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+              ->header('Pragma', 'no-cache')
+              ->header('Expires', '0');
 
         } catch (\Exception $e) {
             Log::error('Error getting karyawan data: ' . $e->getMessage());
