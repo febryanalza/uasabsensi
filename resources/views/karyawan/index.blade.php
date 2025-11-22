@@ -49,14 +49,15 @@
                         @change="loadKaryawan()"
                         class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
                     <option value="">Semua Status</option>
-                    <option value="aktif">Aktif</option>
-                    <option value="non_aktif">Non Aktif</option>
+                    <option value="AKTIF">Aktif</option>
+                    <option value="CUTI">Cuti</option>
+                    <option value="RESIGN">Resign</option>
                 </select>
                 
-                <select x-model="filters.divisi" 
+                <select x-model="filters.departemen" 
                         @change="loadKaryawan()"
                         class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
-                    <option value="">Semua Divisi</option>
+                    <option value="">Semua Departemen</option>
                     <option value="IT">IT</option>
                     <option value="HR">HR</option>
                     <option value="Finance">Finance</option>
@@ -102,8 +103,8 @@
         <div class="bg-white rounded-xl p-6 card-shadow">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600">Non Aktif</p>
-                    <p class="text-2xl font-bold text-red-600" x-text="statistics.non_aktif">-</p>
+                    <p class="text-sm font-medium text-gray-600">Cuti</p>
+                    <p class="text-2xl font-bold text-orange-600" x-text="statistics.cuti">-</p>
                 </div>
                 <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                     <i class="fas fa-user-times text-red-600"></i>
@@ -114,11 +115,11 @@
         <div class="bg-white rounded-xl p-6 card-shadow">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600">Baru Bulan Ini</p>
-                    <p class="text-2xl font-bold text-purple-600" x-text="statistics.baru_bulan_ini">-</p>
+                    <p class="text-sm font-medium text-gray-600">Resign</p>
+                    <p class="text-2xl font-bold text-red-600" x-text="statistics.resign">-</p>
                 </div>
-                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-plus text-purple-600"></i>
+                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-times text-red-600"></i>
                 </div>
             </div>
         </div>
@@ -154,10 +155,10 @@
                             NIP / Email
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Divisi / Posisi
+                            Departemen / Jabatan
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Tanggal Bergabung
+                            Tanggal Masuk
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
@@ -225,8 +226,8 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" x-text="formatDate(karyawan.tanggal_masuk || karyawan.created_at)"></td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                      :class="(karyawan.status === 'AKTIF' || karyawan.status === 'aktif') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-                                      x-text="(karyawan.status === 'AKTIF' || karyawan.status === 'aktif') ? 'Aktif' : 'Non Aktif'">
+                                      :class="karyawan.status === 'AKTIF' ? 'bg-green-100 text-green-800' : (karyawan.status === 'CUTI' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800')"
+                                      x-text="karyawan.status === 'AKTIF' ? 'Aktif' : (karyawan.status === 'CUTI' ? 'Cuti' : 'Resign')">
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -360,7 +361,7 @@ function karyawanData() {
         searchQuery: '',
         filters: {
             status: '',
-            divisi: ''
+            departemen: ''
         },
         pagination: {
             current_page: 1,
@@ -373,8 +374,8 @@ function karyawanData() {
         statistics: {
             total: 0,
             aktif: 0,
-            non_aktif: 0,
-            baru_bulan_ini: 0
+            cuti: 0,
+            resign: 0
         },
         showDeleteModal: false,
         selectedKaryawan: null,
@@ -416,8 +417,8 @@ function karyawanData() {
                     params.append('status', this.filters.status);
                 }
                 
-                if (this.filters.divisi) {
-                    params.append('departemen', this.filters.divisi); // API expects 'departemen'
+                if (this.filters.departemen) {
+                    params.append('departemen', this.filters.departemen);
                 }
                 
                 const response = await fetch(`/karyawan/api/data?${params.toString()}`);
@@ -457,7 +458,7 @@ function karyawanData() {
         
         resetFilters() {
             this.searchQuery = '';
-            this.filters = { status: '', divisi: '' };
+            this.filters = { status: '', departemen: '' };
             this.pagination.current_page = 1;
             this.loadKaryawan();
         },

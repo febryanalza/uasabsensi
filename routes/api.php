@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\RfidController;
-use App\Http\Controllers\API\KaryawanController;
 use App\Http\Controllers\API\AbsensiController;
 use App\Http\Controllers\API\AturanPerusahaanController;
 use App\Http\Controllers\API\LemburController;
@@ -60,31 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    // ============================================
-    // KARYAWAN MANAGEMENT (ADMIN & MANAGER)
-    // ============================================
-    Route::prefix('karyawan')->group(function () {
-        // List & Search Karyawan
-        Route::get('/', [KaryawanController::class, 'index']);
-        
-        // Get Karyawan Statistics
-        Route::get('/statistics', [KaryawanController::class, 'statistics']);
-        
-        // Get Single Karyawan Detail
-        Route::get('/{id}', [KaryawanController::class, 'show']);
-        
-        // Create New Karyawan (with User Account)
-        Route::post('/', [KaryawanController::class, 'store']);
-        
-        // Bulk Create Karyawan
-        Route::post('/bulk', [KaryawanController::class, 'bulkStore']);
-        
-        // Update Karyawan
-        Route::put('/{id}', [KaryawanController::class, 'update']);
-        
-        // Delete Karyawan
-        Route::delete('/{id}', [KaryawanController::class, 'destroy']);
-    });
+
 
     // ============================================
     // ABSENSI MANAGEMENT

@@ -22,6 +22,10 @@
 </li>
 @endsection
 
+@push('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('content')
 <div x-data="createKaryawanData()">
     <form @submit.prevent="submitForm()" class="space-y-6">
@@ -52,20 +56,20 @@
                     <p x-show="errors.nama" x-text="errors.nama" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
-                <!-- NIK -->
+                <!-- NIP -->
                 <div>
-                    <label for="nik" class="block text-sm font-medium text-gray-700 mb-2">
-                        NIK Karyawan <span class="text-red-500">*</span>
+                    <label for="nip" class="block text-sm font-medium text-gray-700 mb-2">
+                        NIP Karyawan <span class="text-red-500">*</span>
                     </label>
                     <input type="text" 
-                           name="nik" 
-                           id="nik" 
-                           x-model="formData.nik"
+                           name="nip" 
+                           id="nip" 
+                           x-model="formData.nip"
                            required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.nik ? 'border-red-500' : ''"
+                           :class="errors.nip ? 'border-red-500' : ''"
                            placeholder="Contoh: EMP001">
-                    <p x-show="errors.nik" x-text="errors.nik" class="mt-1 text-sm text-red-600"></p>
+                    <p x-show="errors.nip" x-text="errors.nip" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
                 <!-- Email -->
@@ -86,52 +90,23 @@
 
                 <!-- Nomor Telepon -->
                 <div>
-                    <label for="nomor_telepon" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="telepon" class="block text-sm font-medium text-gray-700 mb-2">
                         Nomor Telepon <span class="text-red-500">*</span>
                     </label>
                     <input type="tel" 
-                           name="nomor_telepon" 
-                           id="nomor_telepon" 
-                           x-model="formData.nomor_telepon"
+                           name="telepon" 
+                           id="telepon" 
+                           x-model="formData.telepon"
                            required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.nomor_telepon ? 'border-red-500' : ''"
+                           :class="errors.telepon ? 'border-red-500' : ''"
                            placeholder="08123456789">
-                    <p x-show="errors.nomor_telepon" x-text="errors.nomor_telepon" class="mt-1 text-sm text-red-600"></p>
+                    <p x-show="errors.telepon" x-text="errors.telepon" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
-                <!-- Tanggal Lahir -->
-                <div>
-                    <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-2">
-                        Tanggal Lahir <span class="text-red-500">*</span>
-                    </label>
-                    <input type="date" 
-                           name="tanggal_lahir" 
-                           id="tanggal_lahir" 
-                           x-model="formData.tanggal_lahir"
-                           required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.tanggal_lahir ? 'border-red-500' : ''">
-                    <p x-show="errors.tanggal_lahir" x-text="errors.tanggal_lahir" class="mt-1 text-sm text-red-600"></p>
-                </div>
 
-                <!-- Jenis Kelamin -->
-                <div>
-                    <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-2">
-                        Jenis Kelamin <span class="text-red-500">*</span>
-                    </label>
-                    <select name="jenis_kelamin" 
-                            id="jenis_kelamin" 
-                            x-model="formData.jenis_kelamin"
-                            required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                            :class="errors.jenis_kelamin ? 'border-red-500' : ''">
-                        <option value="">Pilih jenis kelamin</option>
-                        <option value="L">Laki-laki</option>
-                        <option value="P">Perempuan</option>
-                    </select>
-                    <p x-show="errors.jenis_kelamin" x-text="errors.jenis_kelamin" class="mt-1 text-sm text-red-600"></p>
-                </div>
+
+
 
                 <!-- Alamat -->
                 <div class="md:col-span-2">
@@ -162,18 +137,18 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Divisi -->
+                <!-- Departemen -->
                 <div>
-                    <label for="divisi" class="block text-sm font-medium text-gray-700 mb-2">
-                        Divisi <span class="text-red-500">*</span>
+                    <label for="departemen" class="block text-sm font-medium text-gray-700 mb-2">
+                        Departemen <span class="text-red-500">*</span>
                     </label>
-                    <select name="divisi" 
-                            id="divisi" 
-                            x-model="formData.divisi"
+                    <select name="departemen" 
+                            id="departemen" 
+                            x-model="formData.departemen"
                             required
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                            :class="errors.divisi ? 'border-red-500' : ''">
-                        <option value="">Pilih divisi</option>
+                            :class="errors.departemen ? 'border-red-500' : ''">
+                        <option value="">Pilih departemen</option>
                         <option value="IT">Information Technology</option>
                         <option value="HR">Human Resources</option>
                         <option value="Finance">Finance</option>
@@ -182,38 +157,38 @@
                         <option value="Sales">Sales</option>
                         <option value="Production">Production</option>
                     </select>
-                    <p x-show="errors.divisi" x-text="errors.divisi" class="mt-1 text-sm text-red-600"></p>
+                    <p x-show="errors.departemen" x-text="errors.departemen" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
-                <!-- Posisi -->
+                <!-- Jabatan -->
                 <div>
-                    <label for="posisi" class="block text-sm font-medium text-gray-700 mb-2">
-                        Posisi <span class="text-red-500">*</span>
+                    <label for="jabatan" class="block text-sm font-medium text-gray-700 mb-2">
+                        Jabatan <span class="text-red-500">*</span>
                     </label>
                     <input type="text" 
-                           name="posisi" 
-                           id="posisi" 
-                           x-model="formData.posisi"
+                           name="jabatan" 
+                           id="jabatan" 
+                           x-model="formData.jabatan"
                            required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.posisi ? 'border-red-500' : ''"
+                           :class="errors.jabatan ? 'border-red-500' : ''"
                            placeholder="Contoh: Software Developer">
-                    <p x-show="errors.posisi" x-text="errors.posisi" class="mt-1 text-sm text-red-600"></p>
+                    <p x-show="errors.jabatan" x-text="errors.jabatan" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
-                <!-- Tanggal Bergabung -->
+                <!-- Tanggal Masuk -->
                 <div>
-                    <label for="tanggal_bergabung" class="block text-sm font-medium text-gray-700 mb-2">
-                        Tanggal Bergabung <span class="text-red-500">*</span>
+                    <label for="tanggal_masuk" class="block text-sm font-medium text-gray-700 mb-2">
+                        Tanggal Masuk <span class="text-red-500">*</span>
                     </label>
                     <input type="date" 
-                           name="tanggal_bergabung" 
-                           id="tanggal_bergabung" 
-                           x-model="formData.tanggal_bergabung"
+                           name="tanggal_masuk" 
+                           id="tanggal_masuk" 
+                           x-model="formData.tanggal_masuk"
                            required
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
-                           :class="errors.tanggal_bergabung ? 'border-red-500' : ''">
-                    <p x-show="errors.tanggal_bergabung" x-text="errors.tanggal_bergabung" class="mt-1 text-sm text-red-600"></p>
+                           :class="errors.tanggal_masuk ? 'border-red-500' : ''">
+                    <p x-show="errors.tanggal_masuk" x-text="errors.tanggal_masuk" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
                 <!-- Gaji Pokok -->
@@ -248,15 +223,49 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
                             :class="errors.status ? 'border-red-500' : ''">
                         <option value="">Pilih status</option>
-                        <option value="aktif">Aktif</option>
-                        <option value="non_aktif">Non Aktif</option>
-                        <option value="cuti">Cuti</option>
+                        <option value="AKTIF">Aktif</option>
+                        <option value="CUTI">Cuti</option>
+                        <option value="RESIGN">Resign</option>
                     </select>
                     <p x-show="errors.status" x-text="errors.status" class="mt-1 text-sm text-red-600"></p>
                 </div>
 
-                <!-- RFID Card -->
+                <!-- Password -->
                 <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Password Login <span class="text-red-500">*</span>
+                    </label>
+                    <input type="password" 
+                           name="password" 
+                           id="password" 
+                           x-model="formData.password"
+                           required
+                           minlength="8"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
+                           :class="errors.password ? 'border-red-500' : ''"
+                           placeholder="Minimal 8 karakter">
+                    <p x-show="errors.password" x-text="errors.password" class="mt-1 text-sm text-red-600"></p>
+                </div>
+
+                <!-- Role -->
+                <div>
+                    <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
+                        Role Akses
+                    </label>
+                    <select name="role" 
+                            id="role" 
+                            x-model="formData.role"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus"
+                            :class="errors.role ? 'border-red-500' : ''">
+                        <option value="USER">User</option>
+                        <option value="MANAGER">Manager</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                    <p x-show="errors.role" x-text="errors.role" class="mt-1 text-sm text-red-600"></p>
+                </div>
+
+                <!-- RFID Card -->
+                <div class="md:col-span-2">
                     <label for="rfid_card" class="block text-sm font-medium text-gray-700 mb-2">
                         RFID Card Number
                         <span class="text-sm text-gray-500">(Optional)</span>
@@ -324,17 +333,17 @@ function createKaryawanData() {
     return {
         formData: {
             nama: '',
-            nik: '',
+            nip: '',
             email: '',
-            nomor_telepon: '',
-            tanggal_lahir: '',
-            jenis_kelamin: '',
+            telepon: '',
             alamat: '',
-            divisi: '',
-            posisi: '',
-            tanggal_bergabung: new Date().toISOString().split('T')[0], // Default to today
+            departemen: '',
+            jabatan: '',
+            tanggal_masuk: new Date().toISOString().split('T')[0], // Default to today
             gaji_pokok: '',
-            status: 'aktif', // Default to active
+            status: 'AKTIF', // Default to active
+            password: '',
+            role: 'USER', // Default role
             rfid_card: ''
         },
         errors: {},
@@ -343,8 +352,8 @@ function createKaryawanData() {
         loadingRfidCards: false,
         
         init() {
-            // Set default date for tanggal_bergabung
-            this.formData.tanggal_bergabung = new Date().toISOString().split('T')[0];
+            // Set default date for tanggal_masuk
+            this.formData.tanggal_masuk = new Date().toISOString().split('T')[0];
             
             // Load available RFID cards
             this.loadAvailableRfidCards();
@@ -378,19 +387,30 @@ function createKaryawanData() {
                 // Prepare form data
                 const submitData = { ...this.formData };
                 
+                // Map rfid_card to rfid_card_number for backend compatibility
+                if (submitData.rfid_card) {
+                    submitData.rfid_card_number = submitData.rfid_card;
+                }
+                
                 // Remove currency formatting from gaji_pokok
                 submitData.gaji_pokok = this.parseCurrency(submitData.gaji_pokok);
+                
+                console.log('Submitting data:', submitData);
                 
                 const response = await fetch('/karyawan/store', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': window.CSRF_TOKEN
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(submitData)
                 });
                 
+                console.log('Response status:', response.status);
+                
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 if (response.ok && data.success) {
                     showNotification('success', 'Karyawan berhasil ditambahkan');
@@ -402,8 +422,10 @@ function createKaryawanData() {
                     // Handle validation errors
                     if (data.errors) {
                         this.errors = data.errors;
+                        console.log('Validation errors:', data.errors);
                         showNotification('error', 'Silakan perbaiki kesalahan pada form');
                     } else {
+                        console.log('Error message:', data.message);
                         showNotification('error', data.message || 'Gagal menambahkan karyawan');
                     }
                 }
@@ -419,17 +441,17 @@ function createKaryawanData() {
         resetForm() {
             this.formData = {
                 nama: '',
-                nik: '',
+                nip: '',
                 email: '',
-                nomor_telepon: '',
-                tanggal_lahir: '',
-                jenis_kelamin: '',
+                telepon: '',
                 alamat: '',
-                divisi: '',
-                posisi: '',
-                tanggal_bergabung: new Date().toISOString().split('T')[0],
+                departemen: '',
+                jabatan: '',
+                tanggal_masuk: new Date().toISOString().split('T')[0],
                 gaji_pokok: '',
-                status: 'aktif',
+                status: 'AKTIF',
+                password: '',
+                role: 'USER',
                 rfid_card: ''
             };
             this.errors = {};

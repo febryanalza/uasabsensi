@@ -45,29 +45,35 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/activities', [DashboardController::class, 'getRecentActivities'])->name('dashboard.activities');
     Route::get('/dashboard/attendance-chart', [DashboardController::class, 'getAttendanceChart'])->name('dashboard.attendance-chart');
     
-// Karyawan management routes
-Route::prefix('karyawan')->middleware('auth')->group(function () {
-    Route::get('/', [KaryawanController::class, 'index'])->name('karyawan.index');
-    Route::get('/create', [KaryawanController::class, 'create'])->name('karyawan.create');
-    Route::get('/{id}', [KaryawanController::class, 'show'])->name('karyawan.show');
-    Route::get('/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
-    
-    // API routes for AJAX
-    Route::post('/store', [KaryawanController::class, 'store'])->name('karyawan.store');
-    Route::put('/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
-    Route::delete('/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
-    
-    // Get available RFID cards
-    Route::get('/api/available-rfid', [KaryawanController::class, 'getAvailableRfid'])->name('karyawan.available-rfid');
-});    // Karyawan AJAX API Routes (consolidated)
-    Route::prefix('karyawan/api')->name('karyawan.api.')->group(function () {
-        Route::get('/data', [KaryawanController::class, 'getData'])->name('data');
-        Route::get('/statistics', [KaryawanController::class, 'getStatistics'])->name('statistics');
+    // Karyawan management routes
+    Route::prefix('karyawan')->name('karyawan.')->group(function () {
+        // View routes
+        Route::get('/', [KaryawanController::class, 'index'])->name('index');
+        Route::get('/create', [KaryawanController::class, 'create'])->name('create');
+        Route::get('/{id}', [KaryawanController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [KaryawanController::class, 'edit'])->name('edit');
+        
+        // AJAX API routes
         Route::post('/store', [KaryawanController::class, 'store'])->name('store');
-        Route::get('/{id}', [KaryawanController::class, 'getKaryawan'])->name('get');
         Route::put('/{id}', [KaryawanController::class, 'update'])->name('update');
-        Route::delete('/{id}/delete', [KaryawanController::class, 'destroy'])->name('delete');
-        Route::post('/bulk-operation', [KaryawanController::class, 'bulkOperation'])->name('bulk');
+        Route::delete('/{id}', [KaryawanController::class, 'destroy'])->name('destroy');
+        
+        // API endpoints for AJAX data (now all handled by Web controller)
+        Route::prefix('api')->name('api.')->group(function () {
+            Route::get('/', [KaryawanController::class, 'index'])->name('index'); // List all karyawan
+            Route::post('/', [KaryawanController::class, 'store'])->name('store'); // Create new karyawan
+            Route::get('/data', [KaryawanController::class, 'getData'])->name('data');
+            Route::get('/statistics', [KaryawanController::class, 'statistics'])->name('statistics');
+            Route::get('/available-rfid', [KaryawanController::class, 'getAvailableRfid'])->name('available-rfid');
+            Route::get('/{id}', [KaryawanController::class, 'getKaryawan'])->name('get');
+            Route::get('/{id}/show', [KaryawanController::class, 'apiShow'])->name('show'); // Detailed show
+            Route::put('/{id}', [KaryawanController::class, 'update'])->name('update');
+            Route::delete('/{id}', [KaryawanController::class, 'destroy'])->name('delete');
+            Route::post('/bulk-store', [KaryawanController::class, 'bulkStore'])->name('bulk-store');
+            Route::post('/bulk-operation', [KaryawanController::class, 'bulkOperation'])->name('bulk');
+            Route::get('/export', [KaryawanController::class, 'export'])->name('export');
+            Route::post('/import', [KaryawanController::class, 'import'])->name('import');
+        });
     });
 
     // Absensi Management Routes
@@ -122,6 +128,9 @@ Route::prefix('karyawan')->middleware('auth')->group(function () {
         Route::put('/{id}', [AturanPerusahaanController::class, 'update'])->name('update');
         Route::delete('/{id}', [AturanPerusahaanController::class, 'destroy'])->name('destroy');
     });
+    
+    // Include RFID Management routes
+    require __DIR__.'/rfid.php';
 });
 
 // API Routes (outside auth middleware)

@@ -121,7 +121,6 @@ class KaryawanController extends Controller
         try {
             // Create karyawan
             $karyawan = Karyawan::create([
-                'id' => Str::uuid(),
                 'nip' => $request->nip,
                 'nama' => $request->nama,
                 'email' => $request->email,
@@ -140,7 +139,6 @@ class KaryawanController extends Controller
 
             // Create user account
             $user = User::create([
-                'id' => Str::uuid(),
                 'karyawan_id' => $karyawan->id,
                 'name' => $request->nama,
                 'email' => $request->email,
@@ -150,13 +148,22 @@ class KaryawanController extends Controller
 
             // Update RFID card status if provided
             if ($request->rfid_card_number) {
-                $rfid = AvailableRfid::where('card_number', $request->rfid_card_number)->first();
+                $rfid = AvailableRfid::where('card_number', $request->rfid_card_number)
+                                   ->where('status', 'AVAILABLE')
+                                   ->first();
                 if ($rfid) {
                     $rfid->update([
                         'karyawan_id' => $karyawan->id,
                         'status' => 'ASSIGNED',
                         'assigned_at' => now(),
                     ]);
+                } else {
+                    // Rollback if RFID card is not available
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Kartu RFID tidak tersedia atau sudah digunakan'
+                    ], 422);
                 }
             }
 
@@ -469,7 +476,6 @@ class KaryawanController extends Controller
                 try {
                     // Create karyawan
                     $karyawan = Karyawan::create([
-                        'id' => Str::uuid(),
                         'nip' => $data['nip'],
                         'nama' => $data['nama'],
                         'email' => $data['email'],
@@ -479,6 +485,7 @@ class KaryawanController extends Controller
                         'alamat' => $data['alamat'] ?? null,
                         'tanggal_masuk' => $data['tanggal_masuk'] ?? now(),
                         'status' => $data['status'] ?? 'AKTIF',
+                        'rfid_card_number' => $data['rfid_card_number'] ?? null,
                         'gaji_pokok' => $data['gaji_pokok'] ?? 0,
                         'tunjangan_jabatan' => $data['tunjangan_jabatan'] ?? 0,
                         'tunjangan_transport' => $data['tunjangan_transport'] ?? 0,
@@ -487,7 +494,6 @@ class KaryawanController extends Controller
 
                     // Create user account
                     User::create([
-                        'id' => Str::uuid(),
                         'karyawan_id' => $karyawan->id,
                         'name' => $data['nama'],
                         'email' => $data['email'],

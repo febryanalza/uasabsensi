@@ -264,6 +264,14 @@
                     </a>
                 </div>
             </div>
+
+            <!-- RFID Management -->
+            <a href="{{ route('rfid.index') }}" 
+               class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200"
+               :class="currentPage === 'rfid.index' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'">
+                <i class="fas fa-credit-card w-5 h-5 mr-3"></i>
+                RFID Management
+            </a>
         </nav>
 
         <!-- User info -->
